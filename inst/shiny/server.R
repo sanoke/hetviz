@@ -12,6 +12,7 @@
 
 # source all files in R/
 devtools::load_all()
+print("testing the sourcing")
 
 # max file upload size is 3GB
 options(shiny.maxRequestSize=3*1024^3)
