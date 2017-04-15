@@ -67,6 +67,7 @@ collapseProp <- function(data, var=1) {
 #'
 #' @return A string such that, once evaluated, will generate the
 #'   "Viz by Subgroup" tab.
+#' @export
 flexPlot.byStratum <- function(varNames="", reset=FALSE) {
 
   firstPart  <- 'tabPanel("Viz by Subgroup", value="vizSubgroup", br(), '
