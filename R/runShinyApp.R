@@ -14,12 +14,14 @@ hetviz <- function() {
     stop("Could not find directory containing GUI. Try re-installing `hetviz`.",
          call. = FALSE)
   }
-  helperFiles <- list.files(".", full.names = FALSE)
-  selectedFiles <- which(helperFiles != "runShinyApp.R")
-  helperFiles <- helperFiles[selectedFiles]
-  helperFcns <- file.path(".", helperFiles)
+  helperFiles <- c("covarProfiles-plotFcn.R",
+                   "forestPlot-plotFcns.R",
+                   "subgrouProfiles-plotFcn.R",
+                   "summaryFcns.R",
+                   "vizByCovar-plotFcn.R",
+                   "vizBySubgroup-plotFcns.R")
   print(helperFiles)
-  for(h in helperFcns)
+  for(h in helperFiles)
     print(h)
     source(h, local = TRUE)
   shiny::runApp(appDir, display.mode = "normal")
