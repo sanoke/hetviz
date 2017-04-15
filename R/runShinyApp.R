@@ -14,6 +14,6 @@ hetviz <- function() {
     stop("Could not find directory containing GUI. Try re-installing `hetviz`.",
          call. = FALSE)
   }
-
+  devtools::load_all()
   shiny::runApp(appDir, display.mode = "normal")
 }
