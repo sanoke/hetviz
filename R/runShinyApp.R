@@ -18,7 +18,9 @@ hetviz <- function() {
   selectedFiles <- which(helperFiles != "runShinyApp.R")
   helperFiles <- helperFiles[selectedFiles]
   helperFcns <- file.path(".", helperFiles)
+  print(helperFiles)
   for(h in helperFcns)
+    print(h)
     source(h, local = TRUE)
   shiny::runApp(appDir, display.mode = "normal")
 }
