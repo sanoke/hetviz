@@ -10,6 +10,9 @@
 ##        this code is called once (the first time the app is launched)
 ## - - - - - - - - - - - - - - - - - - - - - - - - -
 
+# source all files in R/
+devtools::load_all()
+
 # max file upload size is 3GB
 options(shiny.maxRequestSize=3*1024^3)
 
