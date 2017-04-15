@@ -14,5 +14,11 @@ hetviz <- function() {
     stop("Could not find directory containing GUI. Try re-installing `hetviz`.",
          call. = FALSE)
   }
+  helperFiles <- list.files(".", full.names = FALSE)
+  selectedFiles <- which(helperFiles != "runShinyApp.R")
+  helperFiles <- helperFiles[selectedFiles]
+  helperFcns <- file.path(".", helperFiles)
+  for(h in helperFcns)
+    source(h, local = TRUE)
   shiny::runApp(appDir, display.mode = "normal")
 }
