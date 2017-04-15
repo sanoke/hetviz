@@ -14,7 +14,7 @@ install.packages("devtools")
 library(devtools)
 ```
 
-1. Install `hetviz` using `install_github("sanoke/hetviz-dev")`.
+1. Install `hetviz` using `install_github("sanoke/hetviz")`.
 2. Load `hetviz` using `library(hetviz)`.
 3. Run `hetviz` using `hetviz()` (no arguments).
 
