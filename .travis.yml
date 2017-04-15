@@ -1,0 +1,16 @@
+# don't test functions and files that are purely for graphing
+
+language: r
+
+cache: packages
+
+r_github_packages:
+  - jimhester/covr
+
+r:
+  - oldrel
+  - release
+  - devel
+
+after_success:
+  - Rscript -e 'covr::codecov(function_exclusions = c("flexPlot.byStratum", "vizBySubgroup"), line_exclusions = c("R/covarProfiles-plotFcn.R", "R/vizByCovar-plotFcn.R", "R/subgroupProfiles-plotFcn.R", "R/forestPlot-plotFcn.R", "R/hetviz-doc.R", "R/simpleDataA-doc.R", "R/simpleDataB-doc.R", "R/simpleDataC-doc.R", "R/simpleDataD-doc.R", "R/runShinyApp.R"))'

@@ -1,0 +1,40 @@
+Package: hetviz
+Title: Treatment Effect Heterogeneity visualization
+Version: 1.0.0
+Date: 2017-04-14
+Authors@R: c(person("Sarah", "Anoke", role = c("aut", "cre"),
+    email = "sanoke@post.harvard.edu"),
+      person("Christine", "Choirat", role = "ctb"),
+      person("Cory", "Zigler", role = "ctb"))
+Maintainer: Sarah Anoke <sanoke@post.harvard.edu>
+Description: A graphical user interface for the visualization of
+    treatment effect heterogeneity, including tables and plots that may
+    be helpful in determining the presence of heterogeneity and the
+    covariates that define the subgroups across which the treatment
+    effect varies systematically. The interface is powered by RStudio's
+    Shiny web application framework and works with data provided in a
+    prespecified structure.
+URL: https://github.com/sanoke/hetviz
+BugReports: https://github.com/sanoke/hetviz/issues/
+License: file LICENSE
+Depends:
+    R (>= 3.1.0),
+    shiny (>= 0.12.1),
+    ggplot2 (>= 2.1.1),
+    ggvis,
+    magrittr
+Imports:
+    readr,
+    dplyr,
+    plotly,
+    shinyjs (>= 0.6.0),
+    DT (>= 0.2),
+    shinythemes (>= 1.1.1)
+Suggests:
+    MASS,
+    knitr (>= 1.9),
+    rmarkdown (>= 0.8.1),
+    testthat
+LazyData: true
+VignetteBuilder: knitr
+RoxygenNote: 6.0.1

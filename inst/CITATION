@@ -1,0 +1,14 @@
+citHeader("To cite hetviz in publications use:")
+
+citEntry(entry = "Misc", 
+         title = "hetviz: Treatment Effect Heterogeneity visualization.",
+         author = person(given = "Sarah Anoke"),
+         year = "2017",
+         note = "R package version 1.0.0",
+         url = "http://github.com/sanoke/hetviz",
+         textVersion =
+           paste("Sarah Anoke (2017).",
+                 title = "hetviz: Treatment Effect Heterogeneity visualization.
+                          R package version 1.0.0.",
+                          "http://github.com/sanoke/hetviz.")
+)
