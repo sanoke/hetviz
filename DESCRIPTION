@@ -29,13 +29,13 @@ Imports:
     plotly,
     shinyjs (>= 0.6.0),
     DT (>= 0.2),
-    shinythemes (>= 1.1.1),
-    devtools
+    shinythemes (>= 1.1.1)
 Suggests:
     MASS,
     knitr (>= 1.9),
     rmarkdown (>= 0.8.1),
-    testthat
+    testthat,
+    devtools
 LazyData: true
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
