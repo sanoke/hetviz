@@ -6,35 +6,71 @@ datagen <- function(n,                    # sample size
                     confound = FALSE,     # is confounding present?
                     confoundEMs = FALSE,  # is confounding by EMs present?                    
                     alpha = NULL,         # optional: user can specify their own coeff
-                    beta = NULL) {        # optional: user can specify their own coeff
-                    	
-    gamma1 <- 5          # main effect (association of T with Y)
-    varOutcome <- 1      # outcome variance
+                    beta = NULL,          # optional: user can specify their own coeff
+                    varOutcome = 1) {     # outcome variance
+    
+  if(!is.null(alpha) & length(alpha) != 9) {
+    stop("The alpha vector is not the correct length; please review.")
+  }
+  
+  if(!is.null(beta) & length(beta) != 13) {
+    stop("The beta vector is not the correct length; please review.")
+  }  
     		
 	# determine the parameter values (if not set already)
-	if(is.null(alpha) & is.null(beta)) {
-		alpha1  <-  0.1 # weak.T
-		alpha2  <- -0.1 # weak.T
-		alpha3  <-  1.1 # strong.T
-		alpha4  <- -1.1 # strong.T
-		alpha7  <-  0.4 # moderate.T
-		alpha8  <- -0.1 # weak.T
-		alpha9  <-  1.1 # strong.T
-		alpha10 <- -4   # strongg.T
-		
-		beta0  <- -3.85
-		beta1  <-  0.5  # weak.Y
-		beta2  <- -2    # strong.Y
-		beta3  <- -0.5  # weak.Y
-		beta4  <-  2    # strong.Y
-		beta5  <-  1    # moderate.Y
-		beta6  <- -1    # moderate.Y
-		beta7  <-  0
-		beta8  <- -2    # strong.Y
-		beta9  <-  1    # moderate.Y
-		beta10 <-  4    # strongg.Y
-		beta11 <- -4    # strongg.Y
+	if(is.null(alpha)) {
+	  alpha0  <-  0   # intercept
+		alpha1  <-  0.1 # X1
+		alpha2  <- -0.1 # X2
+		alpha3  <-  1.1 # X3
+		alpha4  <- -1.1 # X4
+		alpha7  <-  0.4 # X5
+		alpha8  <- -0.1 # E1
+		alpha9  <-  1.1 # E2
+		alpha10 <- -4   # E3
+	} else {
+	  alpha0  <-  alpha[1] # intercept
+	  alpha1  <-  alpha[2] # X1
+	  alpha2  <-  alpha[3] # X2
+	  alpha3  <-  alpha[4] # X3
+	  alpha4  <-  alpha[5] # X4
+	  alpha7  <-  alpha[6] # X5
+	  alpha8  <-  alpha[7] # E1
+	  alpha9  <-  alpha[8] # E2
+	  alpha10 <-  alpha[9] # E3
 	}
+    
+  # determine the parameter values (if not set already)
+  if(is.null(beta)) {
+    beta0  <- -3.85 # intercept
+    gamma1 <-  5    # trt
+    beta1  <-  0.5  # X1
+    beta2  <- -2    # X2
+    beta3  <- -0.5  # X3
+    beta4  <-  2    # X4
+    beta5  <-  1    # X6
+    beta6  <- -1    # E1
+    beta7  <-  0    # E2
+    beta8  <- -2    # E3
+    beta9  <-  1    # T*E1
+    beta10 <-  4    # T*E2
+    beta11 <- -4    # T*E3
+  } else {
+    beta0  <- beta[1]  # intercept
+    gamma1 <- beta[2]  # trt
+    beta1  <- beta[3]  # X1
+    beta2  <- beta[4]  # X2
+    beta3  <- beta[5]  # X3
+    beta4  <- beta[6]  # X4
+    beta5  <- beta[7]  # X6
+    beta6  <- beta[8]  # E1
+    beta7  <- beta[9]  # E2
+    beta8  <- beta[10] # E3
+    beta9  <- beta[11] # T*E1
+    beta10 <- beta[12] # T*E2
+    beta11 <- beta[13] # T*E3
+  }
+    
 	
 	# determine the simulation scenario
 	if( effMod ) {
@@ -62,6 +98,7 @@ datagen <- function(n,                    # sample size
 		
 		alpha <- numeric(10)
 		names(alpha) <- c("constant", paste0("X",1:6), paste0("Z",1:3))
+		alpha["constant"] <- alpha0
 		alpha["X1"] <- alpha1
 		alpha["X2"] <- alpha2
 		alpha["X3"] <- alpha3
@@ -84,6 +121,7 @@ datagen <- function(n,                    # sample size
 		
 		alpha <- numeric(10)
 		names(alpha) <- c("constant", paste0("X",1:6), paste0("Z",1:3))
+		alpha["constant"] <- alpha0
 		alpha["X5"] <- alpha7
 	
 		beta  <- numeric(14)
@@ -103,6 +141,7 @@ datagen <- function(n,                    # sample size
 		
 		alpha <- numeric(10)
 		names(alpha) <- c("constant", paste0("X",1:6), paste0("Z",1:3))
+		alpha["constant"] <- alpha0
 		alpha["X1"] <- alpha1
 		alpha["X2"] <- alpha2
 		alpha["X3"] <- alpha3
@@ -129,6 +168,7 @@ datagen <- function(n,                    # sample size
 		# effect modification + confounding (EMs assoc w trt)
 		alpha <- numeric(10)
 		names(alpha) <- c("constant", paste0("X",1:6), paste0("Z",1:3))
+		alpha["constant"] <- alpha0
 		alpha["X1"] <- alpha1
 		alpha["X2"] <- alpha2
 		alpha["X3"] <- alpha3
@@ -181,26 +221,4 @@ datagen <- function(n,                    # sample size
 	ds <- data.frame(trt, Y, allCovars, Y0, Y1, trueGrp)
 	
 	return( ds )
-}
-
-forestPlotData <- function(ds) {
-	
-	grpNum <- sort(unique(ds$estGrp))
-	
-	plotDataNames <- c("grp", paste0("q", c("025", "25", "50", "75", "975")))
-	
-	plotData <- matrix(nrow=length(grpNum), ncol=length(plotDataNames))
-	colnames(plotData) <- plotDataNames
-	plotData <- as.data.frame(plotData)
-	plotData$grp <- factor(paste0("Stratum ",1:length(grpNum)), 
-	                         levels=paste0("Stratum ",1:length(grpNum)))
-	
-	for(k in 1:length(grpNum)) {
-		subgrp <- ds$mmt[ ds$estGrp == k ]
-		plotData[k, c("q025", "q25", "q50", "q75", "q975")] <- 
-		                 quantile( subgrp , probs=c(0.025, 0.25, 0.50, 0.75, 0.975))			
-	}
-	
-	return(plotData)
-	
 }
