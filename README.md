@@ -7,24 +7,6 @@
 
 See the [wiki](https://github.com/sanoke/hetviz/wiki) for detailed instructions and demonstrations.
 
-#### Installation
+#### Example Data
 
-1. Download **hetviz** by clicking [here](https://github.com/sanoke/hetviz/archive/master.zip) or cloning the repository.
-2. Open `R`.
-2. Install and load the `devtools` package in `R`, which will facilitate the installation of this package.
-```
-install.packages("devtools")
-```
-3. Within `R`, use `setwd()` to set your working directory to the top level of the **hetviz** clone you just downloaded.
-4. Load `hetviz` using `devtools::load_all()`.
-3. Run `hetviz` using `hetviz()` (no arguments). The application will launch in a new window.
-
-~~Install `hetviz` using `install_github("sanoke/hetviz")`.~~ Not working (not sourcing scripts correctly); will look into this.
-
-##### Bug Reporting
-
-Report any bugs or suggestions as an [issue](https://github.com/sanoke/hetviz/issues).
-
-##### Licensing
-
-The hetviz R package and `shiny` interface are open source licensed under the GNU Public License, version 3 (GPLv3).
+This package contains several example datasets that can be used to explore its functionality. The datasets and simulation scripts are contained in this directory, and described in detail in the [User Manual](https://github.com/sanoke/hetviz/wiki/Data-included-in-package).
