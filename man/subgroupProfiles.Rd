@@ -19,6 +19,9 @@ defined within \code{dataCompat()}.}
 \item{SPplotLines}{A logical scalar. Should the plot include
 connecting lines?}
 
+\item{SPcovarGuideLines}{A logical scalar. Should the plot include
+a black vertical dotted line for each covariate?}
+
 \item{col.outcome}{A scalar integer, indicating the column of \code{ds}
 that contains the outcome.}
 
