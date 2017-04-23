@@ -331,29 +331,3 @@ forestPlotGen.manyGroups <- function(ds,
    return(p)
 
 }
-
-
-#' Generates individual-level figure for 'Forest Plot' tab
-#'
-#' \code{groupQuantiles()} is an internal function that
-#' takes a dataset and returns quantiles from a
-#' specific subgroup.
-#'
-#' @param grpNum A scalar indicating which subgroup to
-#'   calculate quantiles from.
-#' @param quantiles0 A vector indicating which quantiles to
-#'   calculate.
-#' @param ds A dataset of a very specific structure, as
-#'   defined by \code{dataCompat()}.
-#'
-#' @return A vector containing the quantiles from the specified
-#'   subgroup.
-#'
-#' @family plotting functions
-groupQuantiles <- function(grpNum, ds, quantiles0 = c(0.25, 0.50, 0.75)) {
-
-	subgroup <- ds$mmt[ ds$estGrp == grpNum ]
-
-	return( quantile(subgroup, probs = quantiles0 ) )
-
-}
