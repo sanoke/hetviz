@@ -4,8 +4,9 @@
 \alias{subgroupProfiles}
 \title{Generates figure for 'Subgroup Profiles' tab}
 \usage{
-subgroupProfiles(ds, SPplotPts = TRUE, SPplotLines = TRUE, col.outcome,
-  col.trt, col.ITE, col.grp, cols.covars, cols.cts, cols.ctg)
+subgroupProfiles(ds, SPplotPts = TRUE, SPplotLines = TRUE,
+  SPcovarGuideLines = FALSE, col.outcome, col.trt, col.ITE, col.grp,
+  cols.covars, cols.cts, cols.ctg, simData)
 }
 \arguments{
 \item{ds}{Any object that can be coerced into a \code{data.frame},
@@ -41,6 +42,10 @@ variables, if applicable).}
 \item{cols.ctg}{A integer vector, indicating the columns of \code{ds}
 that contain polytomous variables (including the treatment and outcome
 variables, if applicable).}
+
+\item{simData}{A logical scalar, indicating whether the data is the
+simple simulated data
+(\code{TRUE}) or is more complex (\code{FALSE}).}
 }
 \value{
 If both of the logical arguments are false, the output

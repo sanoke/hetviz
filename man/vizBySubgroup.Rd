@@ -4,8 +4,8 @@
 \alias{vizBySubgroup}
 \title{Generates figures for 'Viz by Subgroup' tab}
 \usage{
-vizBySubgroup(covarData, trt, covarName, ctgLevels = 5, plotHeight = 200,
-  plotWidth = 300, trtColor = "#ffec5c", ctrlColor = "#e1315b")
+vizBySubgroup(covarData, trt, covarName, plotHeight = 200, plotWidth = 300,
+  trtColor = "#ffec5c", ctrlColor = "#e1315b", continuous)
 }
 \arguments{
 \item{covarData}{A vector of numeric covariate data to plot.}
@@ -15,10 +15,6 @@ observation's treatment status (0 or 1).}
 
 \item{covarName}{A string that contains the name of the covariate
 being plotted (for annotating the plot).}
-
-\item{ctgLevels}{A scalar integer that defines the maximum number
-of levels a covariate can have and still be considered
-categorical.}
 
 \item{plotHeight}{A scalar integer that defines the height of
 the plot; passed to \code{ggvis()}.}
@@ -37,6 +33,9 @@ chart. This argument is passed to \code{ggvis()} and can be
 any color specification that's acceptable by R (e.g.,
 see \href{https://www.stat.ubc.ca/~jenny/STAT545A/block14_colors.html}{here}
 for more information).}
+
+\item{continuous}{A logical scalar, indicating whether the provided
+data is from a continuous distribution.}
 }
 \value{
 If both of the logical arguments are false, the output

@@ -4,15 +4,15 @@
 \alias{collapseProp}
 \title{Calculates proportions of individuals in a 2x2 table of (trt, binary covar)}
 \usage{
-collapseProp(data, var = 2)
+collapseProp(data, var = 1)
 }
 \arguments{
 \item{data}{Any object that can be coerced into a \code{data.frame},
-that contains the data needing to be summarized. The first column
+that contains the data needing to be summarized.
+The first column is a binary covariate needing to be summarized.
+The second column
 is a binary variable named \code{trt}
-that indicates each observation's treatment status (0 or 1).
-The remaining
-columns are binary covariates.}
+that indicates each observation's treatment status (0 or 1).}
 
 \item{var}{An scalar integer that indicates
 which column(s) of \code{data} contain the covariates to be
