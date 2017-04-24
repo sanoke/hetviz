@@ -1,3 +1,8 @@
+# # # # # # # # # # # # # # # # # # # # # # # #
+# simpleData.R                                #
+# script used to simulate "simple" data       #
+# # # # # # # # # # # # # # # # # # # # # # # #
+
 library(MASS) # needed to simulate from a multivariate Normal
 
 expit <- function(x) { exp(x) / (1 + exp(x)) }
@@ -233,6 +238,8 @@ simpleDataB <- datagen(n = 1500, effMod = TRUE,  confound = FALSE, confoundEMs =
 simpleDataC <- datagen(n = 1500, effMod = TRUE,  confound = TRUE,  confoundEMs = FALSE)
 simpleDataD <- datagen(n = 1500, effMod = TRUE,  confound = TRUE,  confoundEMs = TRUE)
 
+
+
 # - STEP 2: Estimate ITEs
 #   We recommend using bart() from the BayesTree package.
 #   Below we demonstrate how to estimate ITEs for a particular dataset.
@@ -271,7 +278,9 @@ diffs[, !as.logical(simpleDataB$trt) ] <- round(bartResB$yhat.test - bartResB$yh
                                                 roundDigits)[, !as.logical(simpleDataB$trt)]                             
 indivMMT <- apply(diffs, 2, mean)
 
-# assign each person to a stratum based on their posterior mean TE value
+
+
+# - STEP 3: assign each person to a stratum based on their posterior mean TE value
 cutpts0 <- quantile(indivMMT, seq(0,1,1/numGrp))
 cutpts0 <- sort(unique( round(cutpts0,roundDigits) ))
 cutpts0 <- c(-Inf, cutpts0, Inf)
@@ -311,3 +320,8 @@ round( head(simpleDataB) , 3)
 # 4   0  0.335 -3.131 -0.979 -0.049 -0.414 -0.840  1.801  0  1  0  0.335  7.216       9      9    8.856
 # 5   1  1.502  0.043 -1.304 -0.416  0.138  0.051 -0.214  0  0  0 -3.483  1.502       5      4    4.831
 # 6   1  2.465  1.306  1.619 -1.778  1.400  0.546 -1.185  1  1  0 -6.798  2.465      10     11    9.858
+
+# save the dataset 
+write.csv(simpleDataB, file = "simpleDataB-userGen.csv",
+                       quote = FALSE,
+                       row.names = FALSE)
