@@ -18,10 +18,10 @@ install.packages("devtools")
 3. Run **hetviz** using `hetviz::hetviz()` (no arguments). The application will launch in a new window.
 
 
-##### Bug Reporting
+#### Bug Reporting
 
 Report any bugs or suggestions as an [issue](https://github.com/sanoke/hetviz/issues).
 
-##### Licensing
+#### Licensing
 
 The hetviz R package and `shiny` interface are open source licensed under the GNU Public License, version 3 (GPLv3).
