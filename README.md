@@ -9,17 +9,14 @@ See the [wiki](https://github.com/sanoke/hetviz/wiki) for detailed instructions 
 
 #### Installation
 
-1. Download **hetviz** by clicking [here](https://github.com/sanoke/hetviz/archive/master.zip) or cloning the repository.
-2. Open `R`.
-2. Install and load the `devtools` package in `R`, which will facilitate the installation of this package.
+1. Install and load the `devtools` package in `R`, which will facilitate the installation of this package.
 ```
 install.packages("devtools")
 ```
-3. Within `R`, use `setwd()` to set your working directory to the top level of the **hetviz** clone you just downloaded.
-4. Load `hetviz` using `devtools::load_all()`.
-3. Run `hetviz` using `hetviz()` (no arguments). The application will launch in a new window.
+2. Install **hetviz** using `install_github("sanoke/hetviz")`.
+3. Load **hetviz** using `devtools::load_all()`.
+3. Run **hetviz** using `hetviz::hetviz()` (no arguments). The application will launch in a new window.
 
-~~Install `hetviz` using `install_github("sanoke/hetviz")`.~~ Not working (not sourcing scripts correctly); will look into this.
 
 ##### Bug Reporting
 
