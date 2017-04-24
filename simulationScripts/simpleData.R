@@ -1,3 +1,5 @@
+library(MASS) # needed to simulate from a multivariate Normal
+
 expit <- function(x) { exp(x) / (1 + exp(x)) }
 logit <- function(x) { log( x / (1 - x) ) }
   
@@ -198,19 +200,19 @@ datagen <- function(n,                    # sample size
 	
 	baseCovars <- mvrnorm(n, numeric(6), diag(6))
 	
-	Z1 <- rbinom(n, 1, 0.5)
-	Z2 <- rbinom(n, 1, 0.5)
-	Z3 <- rbinom(n, 1, 0.5)
+	E1 <- rbinom(n, 1, 0.5)
+	E2 <- rbinom(n, 1, 0.5)
+	E3 <- rbinom(n, 1, 0.5)
 	
-	allCovars <- cbind(baseCovars, Z1, Z2, Z3)
+	allCovars <- cbind(baseCovars, E1, E2, E3)
 	colnames(allCovars) <- c( paste0("X",1:6), paste0("E", 1:3) )
 
 	pTreat <- expit( cbind(1, allCovars) %*% alpha )
 	trt <- rbinom(n, 1, pTreat)
 	
-	# intercept, treatment, interaction terms
+	# generating potential outcomes
 	Y0mean <- cbind(1, 0, allCovars, 0*allCovars[,"E1"], 0*allCovars[,"E2"], 0*allCovars[,"E3"]) %*% beta
-    Y0     <- rnorm(n, Y0mean, sqrt(varOutcome))
+  Y0     <- rnorm(n, Y0mean, sqrt(varOutcome))
 	Y1mean <- cbind(1, 1, allCovars, 1*allCovars[,"E1"], 1*allCovars[,"E2"], 1*allCovars[,"E3"]) %*% beta
 	Y1     <- rnorm(n, Y1mean, sqrt(varOutcome))
 	
@@ -222,3 +224,32 @@ datagen <- function(n,                    # sample size
 	
 	return( ds )
 }
+
+# - # - # - # - # 
+
+# - STEP 1: Generate data
+simpleDataA <- datagen(n = 1500, effMod = FALSE, confound = TRUE,  confoundEMs = FALSE)
+simpleDataB <- datagen(n = 1500, effMod = TRUE,  confound = FALSE, confoundEMs = FALSE)
+simpleDataC <- datagen(n = 1500, effMod = TRUE,  confound = TRUE,  confoundEMs = FALSE)
+simpleDataD <- datagen(n = 1500, effMod = TRUE,  confound = TRUE,  confoundEMs = TRUE)
+
+# - STEP 2: Estimate ITEs
+#   We recommend using bart() from the BayesTree package.
+#   Below we demonstrate how to estimate ITEs for a particular dataset.
+# install.packages("BayesTree")
+library(BayesTree)
+
+# training data
+varsExcl <- match(c("Y", "Y0", "Y1", "trueGrp"), names(simpleDataB), nomatch=0)
+xt <- as.matrix(simpleDataB[,-varsExcl])
+
+# data used to generate predictions
+# (same as xt but with trt assnmt flipped)
+trt.rev <- simpleDataB$trt + 1
+trt.rev[trt.rev == 2] <- 0
+varsExcl <- match(c("Y", "Y0", "Y1", "trueGrp", "trt"), names(simpleDataB), nomatch=0)
+xp <- as.matrix(cbind(trt.rev, simpleDataB[,-varsExcl]))
+
+# estimating ITEs 
+# note: this will take a few minutes to complete
+bartResB <- bart(x.train=xt, y.train=simpleDataB$Y, x.test=xp, verbose=FALSE)
