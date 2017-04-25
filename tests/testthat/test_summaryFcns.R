@@ -1,5 +1,7 @@
 library(hetviz)
 
+TOL <- 1e-3
+
 context("Summary functions are summarizing correctly")
 
 test_that("expit() produces the correct value", {
