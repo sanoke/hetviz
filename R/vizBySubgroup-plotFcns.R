@@ -13,9 +13,8 @@
 flexPlot.byStratum <- function(varNames="", reset=FALSE) {
   
   firstPart  <- 'tabPanel("Viz by Subgroup", value="vizSubgroup", br(), '
-  part2      <- 'p("Display of the distribution of a specific covariate,
-  across subgroups."),'
-  part3      <- 'p("Allows for user to see individual figures for each covariate."),'
+  part2      <- 'p("Display of covariate distributions within a particular subgroup."),'
+  part3      <- ''
   part35     <- 'p("Note: If there are no plots for the selected subgroup, this means there
   are zero observations in that subgroup."),'
   part4      <- 'fluidRow(column(5, uiOutput("subgroupSelect"), offset=3)),'

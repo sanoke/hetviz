@@ -12,7 +12,7 @@ source("ui_utils.R", local = TRUE)
 tagList(
   tags$noscript(
     style = "color: red; font-size: 30px; text-align: center;",
-    "Please enable JavaScript to use ShinyStan."
+    "Please enable JavaScript to use hetviz."
   ),
 
   shinyjs::useShinyjs(), # use traditional JavaScript tools
@@ -29,12 +29,6 @@ fluidPage(
 
   fluidRow(
     column(10, offset = 1,
-      "Introductory text, including information on the intended
-       audience and how to use the application (including structure
-       of user-provided data).",
-      br(), br(),
-      "Required packages are shiny, shinyjs, ggplot2, and plotly.",
-      br(),
       "Instructions for how to use this application can be found in the ",
       a( href   = "https://github.com/sanoke/hetviz/wiki",
          "User Manual",
@@ -350,9 +344,8 @@ fluidPage(
 
          tabPanel("Subgroup Profiles", value="subgroupProfiles", br(),
 
-            p("Display of the covariate profiles, by subgroup."),
-
-            p("Allows for user to compare profiles across subgroups."),
+            p("Display of profile for each subgroup, allowing for the comparison
+               of profiles across subgroups."),
 
             conditionalPanel(
               condition = "!input.SPplotPts && !input.SPplotLines",
@@ -385,7 +378,7 @@ fluidPage(
 
          tabPanel("Covariate Profiles", value="covarProfiles", br(),
 
-            p("Display of the covariate profile, by subgroup."),
+            p("Display of covariate profiles across subgroups."),
 
             p("Allows for user to see how the mean of a particular covariate
                changes across subgroups."),
@@ -408,10 +401,8 @@ fluidPage(
 
          tabPanel("Viz by Covariate", value="vizCovar", br(),
 
-            p("Display of the distribution of individual covariates,
-               in a particular subgroup."),
-
-            p("Allows for user to see individual figures for each covariate."),
+            p("Display subgroup-specific averages of a specific covariate, 
+               as a function of the subgroup-specific estimated treatment effect."),
 
             # conditionalPanel(
             #   condition = "!input.VCPplotPts && !input.VCPplotLines",
