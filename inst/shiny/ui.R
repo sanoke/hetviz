@@ -152,7 +152,8 @@ fluidPage(
 
          conditionalPanel(
            condition = "input.simData == 0",
-           span("Specify the location of the data at left. These data should be
+           span("Specify the location of the data at left. 
+                 If provided locally or via URL, these data should be
                  provided within a flat CSV file; more detail can be found
                  in the "),
            a( href = "https://github.com/sanoke/hetviz/wiki/Data-Provision",
@@ -288,7 +289,7 @@ fluidPage(
            br(),
            span("*This data generation mechanism is from:", style = "color: #778899; font-size:0.8em;"),
            br(),
-           span("Anoke SC, Normand S-L, Zigler CM (2017). Approaches to treatment effect heterogeneity in the presence of confounding. (in revision).",
+           span("Anoke SC, Normand S-L, Zigler CM (2017). Approaches to treatment effect heterogeneity in the presence of confounding (submitted).",
                 style = "color: #778899; font-size:0.8em;")
          )), # - - - end "Data Preview" tab
 

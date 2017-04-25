@@ -196,6 +196,8 @@ function(input, output, session) {
     } else if (as.integer(input$userDataType) == 2) {
       # if user has provided a URL for their data
       
+      if (input$userDataURL == "Enter URL...") { return(NULL) }
+      
       if (nchar(input$userDataURL) == 0) { return(NULL) }
       
       ds <<- readr::read_delim(input$userDataURL,
@@ -204,6 +206,11 @@ function(input, output, session) {
       
     } else if (as.integer(input$userDataType) == 3) {
       # user wants to connect to a SQL database
+      
+      if (nchar(input$userDataDBNAME) == 0) { return(NULL) }
+      
+      # for now
+      return(NULL)
       
     }
 
