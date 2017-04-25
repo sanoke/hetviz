@@ -124,25 +124,31 @@ syntheticData  <- data.frame(age, COPD, Hx_CHF, Atherosc, HTN, RenFail,
 
 
 # - STEP 2: Estimate ITEs
+#   We recommend using bart() from the BayesTree package.
+#   Below we demonstrate how to estimate ITEs for a particular dataset.
+# install.packages("BayesTree")
+library(BayesTree)
 
 # training data
-xt <- cbind(syntheticData[,1:17], syntheticData$treatment)
+xt <- cbind(syntheticData[,1:17], trt = syntheticData$treatment)
 
 # data used to generate predictions
 # (same as xt but with trt assnmt flipped)
 trt.rev <- syntheticData$treatment + 1
 trt.rev[trt.rev == 2] <- 0
-xp <- cbind(syntheticData[,1:17], trt.rev)
+xp <- cbind(syntheticData[,1:17], trt = trt.rev)
 
 # coerce covariates into 'double' because BART breaks otherwise	
-xt[1,] <- xt[1,]+1e-5
-xp[1,] <- xp[1,]+1e-5
+xt[1,] <- xt[1,]+1e-4
+xp[1,] <- xp[1,]+1e-4
 
 # estimating ITEs 
 # note: this will take a few minutes to complete
-bartRes <- bart(x.train=xt, y.train=syntheticData$outcome, 
-                x.test=xp, verbose=FALSE,
+system.time({
+	bartRes <- bart(x.train=xt, y.train=syntheticData$outcome, 
+                x.test=xp, verbose=TRUE,
                 ndpost=5000, keepevery=5)
+})
 
 
 # - STEP 3: assign each person to a stratum based on their posterior mean TE value
