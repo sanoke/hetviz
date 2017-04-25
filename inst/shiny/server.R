@@ -572,9 +572,16 @@ function(input, output, session) {
     subgrpData <- dplyr::filter(ds, ds$estGrp == input$subgroup)
     
     # if there is no one in the subgroup, skip the plotting procedures
+    output$vizBySubgrpMSG <- renderText(paste0("The selected subgroup (group ",
+                                               '<span style = \"color:blue; font-weight:bold;\">',
+                                               input$subgroup,
+                                               '</span>',
+                                               ") contains ",
+                                               '<span style = \"color:red; font-weight:bold;\">',
+                                               nrow(subgrpData),
+                                               '</span>',
+                                               " observations."))
     if (nrow(subgrpData) == 0) {
-      output$vizBySubgrpErr <- renderText("The selected subgroup contains no
-                                           observations.")
       return()
     } 
 

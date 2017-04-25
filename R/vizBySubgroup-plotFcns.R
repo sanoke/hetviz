@@ -27,6 +27,8 @@ flexPlot.byStratum <- function(varNames="", reset=FALSE) {
   selectAll   <- 'div(actionButton("selectAll",  "Select all"),  style="display:inline-block;"),'
   selectNone  <- 'div(actionButton("selectNone", "Select none"), style="display:inline-block;"),'
   
+  numObs      <- 'htmlOutput("vizBySubgrpMSG"),'
+  
   varsToPlot <- paste0('ggvis::ggvisOutput("', varNames, '"),', collapse=" ")
   
   tabPanel0 <- paste0(firstPart,
@@ -39,6 +41,9 @@ flexPlot.byStratum <- function(varNames="", reset=FALSE) {
                       part7,
                       selectAll,
                       selectNone,
+                      lineBreak,
+                      lineBreak,
+                      numObs,
                       lineBreak,
                       lineBreak)
   
