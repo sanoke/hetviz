@@ -1,3 +1,5 @@
+devtools::load_all(pkg = system.file(package = "hetviz"))
+
 #' hetviz: Treatment effect heterogeneity (TEH) visualization
 #'
 #' To launch the application, the user should call \code{hetviz()} (no
@@ -14,8 +16,5 @@ hetviz <- function() {
     stop("Could not find directory containing GUI. Try re-installing `hetviz`.",
          call. = FALSE)
   }
-
-  devtools::load_all(pkg = system.file(package = "hetviz"))
-  
   shiny::runApp(appDir, display.mode = "normal")
 }
