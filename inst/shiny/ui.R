@@ -86,12 +86,48 @@ fluidPage(
 
       conditionalPanel(
         condition = "input.simData == 0",
+        radioButtons("userDataType", label = h5("Source"),
+                     choices = list("Upload from local file" = 1, "Download from URL" = 2,
+                                    "Connect to PostgreSQL database" = 3),
+                     selected = 1)
+      ), # - - - end conditionalPanel() (for user-provided data)
+      
+      conditionalPanel(
+        condition = "input.simData == 0 && input.userDataType == 1",
         fileInput("userDataStrat",
                   label = p("Load pre-grouped data below."),
                   accept = c('text/csv',
                              'text/comma-separated-values,text/plain',
                              '.csv'))
-      ), # - - - end conditionalPanel() (for user-provided data)
+      ), # - - - end conditionalPanel() (for user-uploaded data) 
+      
+      conditionalPanel(
+        condition = "input.simData == 0 && input.userDataType == 2",
+        helpText("URL must begin with http://, https://, ftp://, or ftps://"),
+        textInput("userDataURL", label = p("URL of dataset"), 
+                  value = "Enter URL...")
+        
+      ), # - - - end conditionalPanel() (for user data via URL) 
+      
+      conditionalPanel(
+        condition = "input.simData == 0 && input.userDataType == 3",
+        helpText("Provide connection settings for your database."),
+        textInput("userDataDBNAME", 
+                  label = "Name of database", 
+                  value = ""),
+        textInput("userDataHOST", 
+                  label = "Host name", 
+                  value = ""),
+        textInput("userDataPORT", 
+                  label = "Port number", 
+                  value = ""),
+        textInput("userDataUSER", 
+                  label = "User name (if needed)", 
+                  value = ""),
+        textInput("userDataPASSWORD", 
+                  label = "Password (if needed)", 
+                  value = "")        
+      ), # - - - end conditionalPanel() (for user data via PostgreSQL)       
 
       hr(),
 
