@@ -9,6 +9,9 @@
 #'
 #' @export
 #' @import ggplot2
+#' @import shiny
+#' @import ggvis
+#' @import magrittr
 hetviz <- function() {
   appDir <- system.file("shiny", package = "hetviz")
   if (appDir == "") {
