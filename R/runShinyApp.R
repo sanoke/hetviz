@@ -8,6 +8,7 @@
 #' through the graphical user interface.
 #'
 #' @export
+#' @import ggplot2
 hetviz <- function() {
   appDir <- system.file("shiny", package = "hetviz")
   if (appDir == "") {
