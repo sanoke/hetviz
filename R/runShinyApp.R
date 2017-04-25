@@ -1,5 +1,3 @@
-devtools::load_all(pkg = system.file(package = "hetviz"))
-
 #' hetviz: Treatment effect heterogeneity (TEH) visualization
 #'
 #' To launch the application, the user should call \code{hetviz()} (no
