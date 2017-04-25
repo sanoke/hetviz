@@ -86,12 +86,48 @@ fluidPage(
 
       conditionalPanel(
         condition = "input.simData == 0",
+        radioButtons("userDataType", label = h5("Source"),
+                     choices = list("Upload from local file" = 1, "Download from URL" = 2,
+                                    "Connect to PostgreSQL database" = 3),
+                     selected = 1)
+      ), # - - - end conditionalPanel() (for user-provided data)
+      
+      conditionalPanel(
+        condition = "input.simData == 0 && input.userDataType == 1",
         fileInput("userDataStrat",
                   label = p("Load pre-grouped data below."),
                   accept = c('text/csv',
                              'text/comma-separated-values,text/plain',
                              '.csv'))
-      ), # - - - end conditionalPanel() (for user-provided data)
+      ), # - - - end conditionalPanel() (for user-uploaded data) 
+      
+      conditionalPanel(
+        condition = "input.simData == 0 && input.userDataType == 2",
+        helpText("URL must begin with http://, https://, ftp://, or ftps://"),
+        textInput("userDataURL", label = p("URL of dataset"), 
+                  value = "Enter URL...")
+        
+      ), # - - - end conditionalPanel() (for user data via URL) 
+      
+      conditionalPanel(
+        condition = "input.simData == 0 && input.userDataType == 3",
+        helpText("Provide connection settings for your database."),
+        textInput("userDataDBNAME", 
+                  label = "Name of database", 
+                  value = ""),
+        textInput("userDataHOST", 
+                  label = "Host name", 
+                  value = ""),
+        textInput("userDataPORT", 
+                  label = "Port number", 
+                  value = ""),
+        textInput("userDataUSER", 
+                  label = "User name (if needed)", 
+                  value = ""),
+        textInput("userDataPASSWORD", 
+                  label = "Password (if needed)", 
+                  value = "")        
+      ), # - - - end conditionalPanel() (for user data via PostgreSQL)       
 
       hr(),
 
@@ -116,7 +152,8 @@ fluidPage(
 
          conditionalPanel(
            condition = "input.simData == 0",
-           span("Specify the location of the data at left. These data should be
+           span("Specify the location of the data at left. 
+                 If provided locally or via URL, these data should be
                  provided within a flat CSV file; more detail can be found
                  in the "),
            a( href = "https://github.com/sanoke/hetviz/wiki/Data-Provision",
@@ -252,7 +289,7 @@ fluidPage(
            br(),
            span("*This data generation mechanism is from:", style = "color: #778899; font-size:0.8em;"),
            br(),
-           span("Anoke SC, Normand S-L, Zigler CM (2017). Approaches to treatment effect heterogeneity in the presence of confounding. (in revision).",
+           span("Anoke SC, Normand S-L, Zigler CM (2017). Approaches to treatment effect heterogeneity in the presence of confounding (submitted).",
                 style = "color: #778899; font-size:0.8em;")
          )), # - - - end "Data Preview" tab
 
