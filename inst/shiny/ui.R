@@ -203,7 +203,8 @@ fluidPage(
            strong(" eight subgroups "),
            span("(Group 1, ..., Group 8), with six unique treatment effects
                  among them. As determined by the mean of \\(Y\\) and the eight unique
-                 values of \\( ( E_1 , E_2 , E_3 ) \\), the subgroup-specific average
+                 values of \\( ( E_1 , E_2 , E_3 ) \\), "),
+           span(" the subgroup-specific average
                  treatment effects (ATEs) are 1, 2, 5, 5, 6, 9, and 10 units respectively
                  (on the risk difference scale).")
          ),
