@@ -8,21 +8,14 @@
 #' through the graphical user interface.
 #'
 #' @export
+#' @import ggplot2
+#' @import shiny
+#' @import magrittr
 hetviz <- function() {
   appDir <- system.file("shiny", package = "hetviz")
   if (appDir == "") {
     stop("Could not find directory containing GUI. Try re-installing `hetviz`.",
          call. = FALSE)
   }
-  #helperFiles <- c("covarProfiles-plotFcn.R",
-  #                 "forestPlot-plotFcns.R",
-  #                 "subgrouProfiles-plotFcn.R",
-  #                 "summaryFcns.R",
-  #                 "vizByCovar-plotFcn.R",
-  #                 "vizBySubgroup-plotFcns.R")
-  #print(helperFiles)
-  #for(h in helperFiles)
-  #  print(h)
-  #  source(h, local = TRUE)
   shiny::runApp(appDir, display.mode = "normal")
 }

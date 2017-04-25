@@ -11,8 +11,7 @@
 ## - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # source all files in R/
-devtools::load_all()
-print("testing the sourcing")
+devtools::load_all(pkg = system.file(package = "hetviz"))
 
 # max file upload size is 3GB
 options(shiny.maxRequestSize=3*1024^3)
@@ -182,14 +181,40 @@ function(input, output, session) {
   })
 
   userData <- reactive({
+    
+    if (as.integer(input$userDataType) == 1) {
+      # if user is uploading their own data, stored locally
+      
+      inFile <- input$userDataStrat
+      
+      if (is.null(inFile)) { return(NULL) }
+      
+      ds <<- readr::read_delim(inFile$datapath,
+                               delim = ',',
+                               col_names = TRUE)
+      
+    } else if (as.integer(input$userDataType) == 2) {
+      # if user has provided a URL for their data
+      
+      if (input$userDataURL == "Enter URL...") { return(NULL) }
+      
+      if (nchar(input$userDataURL) == 0) { return(NULL) }
+      
+      ds <<- readr::read_delim(input$userDataURL,
+                               delim = ',',
+                               col_names = TRUE)
+      
+    } else if (as.integer(input$userDataType) == 3) {
+      # user wants to connect to a SQL database
+      
+      if (nchar(input$userDataDBNAME) == 0) { return(NULL) }
+      
+      # for now
+      return(NULL)
+      
+    }
 
-    inFile <- input$userDataStrat
 
-    if (is.null(inFile)) { return(NULL) }
-
-    ds <<- readr::read_delim(inFile$datapath,
-                             delim = ',',
-                             col_names = TRUE)
 
     # identify the type of each covariate
     covarType0       <- apply(ds, 2, covarType)
