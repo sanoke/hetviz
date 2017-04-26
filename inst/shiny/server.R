@@ -11,7 +11,8 @@
 ## - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # source all files in R/
-devtools::load_all(pkg = system.file(package = "hetviz"))
+
+library(hetviz)
 
 # max file upload size is 3GB
 options(shiny.maxRequestSize=3*1024^3)
