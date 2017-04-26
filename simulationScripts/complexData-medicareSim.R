@@ -11,6 +11,12 @@ expit <- function(x) { exp(x) / (1 + exp(x)) }
 # CONSTANT: sample size 
 n <- 54099  
 
+# CONSTANT: number of digits to round our data to
+roundDigits <- 4
+
+# CONSTANT: the number of subgroups we want to partition our data into
+numGrp <- 500
+
 
 # - # - # - # - # 
 
@@ -143,16 +149,54 @@ xt[1,] <- xt[1,]+1e-4
 xp[1,] <- xp[1,]+1e-4
 
 # estimating ITEs 
-# note: this will take a few minutes to complete
+# note: this will take up to 12 hours to complete!
+#       however an example of bartRes has been saved in the 
+#       same directory as this script.
 system.time({
 	bartRes <- bart(x.train=xt, y.train=syntheticData$outcome, 
                 x.test=xp, verbose=TRUE,
                 ndpost=5000, keepevery=5)
 })
 
+# bartResB$yhat.train has a row for every draw from the posterior,
+#   and a column for every person in the sample.
+# bartResB$yhat.test has a row for every draw from the posterior predictive,
+#   and a column for every person in the test data (so nrow(xp) columns)
+# (the default is 1000 posterior draws)
+diffs <- matrix(nrow=nrow(bartRes$yhat.train), ncol=ncol(bartRes$yhat.train))
+diffs[,  as.logical(syntheticData$treatment) ] <- round(
+                                                    pnorm(bartRes$yhat.train) - pnorm(bartRes$yhat.test), 
+                                                    roundDigits)[, as.logical(syntheticData$treatment)]
+diffs[, !as.logical(syntheticData$treatment) ] <- round(
+                                                    pnorm(bartRes$yhat.test) - pnorm(bartRes$yhat.train), 
+                                                    roundDigits)[, !as.logical(syntheticData$treatment)]                             
+indivMMT <- apply(diffs, 2, mean)
+
 
 # - STEP 3: assign each person to a stratum based on their posterior mean TE value
+cutpts0 <- quantile(indivMMT, seq(0,1,1/numGrp))
+cutpts0 <- sort(unique( round(cutpts0, roundDigits) ))
+cutpts0 <- c(-Inf, cutpts0, Inf)
+BARTgrp0 <- as.numeric(cut( indivMMT , breaks = cutpts0, 
+                            labels = 1:(length(cutpts0)-1) ))
+                            
+# calculate the treatment effect in each subgroup
+grps <- unique(BARTgrp0)
+TE.BART <- rep(NA, length(grps))
+for(j in 1:length(grps)) {
+	TE.BART[j] <- mean( indivMMT[ BARTgrp0 == grps[j] ] )
+}  
 
+# reorder the group assignments, so the group w the largest TE
+#   has the largest group #
+lvls <- grps[order(TE.BART, decreasing=TRUE, na.last=FALSE)]
+BARTgrp00 <- rep(NA, nrow(syntheticData))
+numGrpCtr <- length(grps)
+for(j in 1:length(lvls)) {
+	# the group w/ the largest TE has the largest group #
+	BARTgrp00[BARTgrp0 == lvls[j]] <- numGrpCtr
+	numGrpCtr <- numGrpCtr - 1
+}                          
 
 # append the subgroup assignment to the dataset
 syntheticData$estGrp   <- BARTgrp00

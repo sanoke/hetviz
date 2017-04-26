@@ -5,6 +5,12 @@
 
 library(MASS) # needed to simulate from a multivariate Normal
 
+# CONSTANT: the number of subgroups we want to partition our data into
+numGrp <- 10 
+
+# CONSTANT: number of digits to round our data to
+roundDigits <- 3
+
 expit <- function(x) { exp(x) / (1 + exp(x)) }
 logit <- function(x) { log( x / (1 - x) ) }
   
@@ -245,11 +251,6 @@ simpleDataD <- datagen(n = 1500, effMod = TRUE,  confound = TRUE,  confoundEMs =
 #   Below we demonstrate how to estimate ITEs for a particular dataset.
 # install.packages("BayesTree")
 library(BayesTree)
-
-# CONSTANT: the number of subgroups we want to partition our data into
-numGrp <- 10 
-# CONSTANT: number of digits to round our data to
-roundDigits <- 3
 
 # training data
 varsExcl <- match(c("Y", "Y0", "Y1", "trueGrp"), names(simpleDataB), nomatch=0)
