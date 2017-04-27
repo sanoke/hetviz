@@ -127,8 +127,9 @@ fluidPage(
 
       hr(),
 
-      helpText("Once all options have been determined, press the
-                appropriate button below."),
+      helpText("Once all options have been determined,
+                the appropriate button will become green, indicating that it
+                is ready to be pressed."),
 
       # start button
       uiOutput("start"),
