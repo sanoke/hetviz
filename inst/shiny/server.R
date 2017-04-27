@@ -11,7 +11,8 @@
 ## - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # source all files in R/
-devtools::load_all(pkg = system.file(package = "hetviz"))
+
+library(hetviz)
 
 # max file upload size is 3GB
 options(shiny.maxRequestSize=3*1024^3)
@@ -71,15 +72,19 @@ function(input, output, session) {
 
   	  if (input$simScenario == 1) {
   	    # confounding and no effect modification
+  	    data(simpleDataA)
   	  	ds <<- simpleDataA
   	  } else if (input$simScenario == 2) {
   	    # effect modification and no confounding
+  	    data(simpleDataB)
   	  	ds <<- simpleDataB
   	  } else if (input$simScenario == 3) {
   	    # effect modification and confounding
+  	    data(simpleDataC)
   	  	ds <<- simpleDataC
   	  } else if (input$simScenario == 4) {
   	    # effect modification and confounding by EMs
+  	    data(simpleDataD)
   	  	ds <<- simpleDataD
   	  }
   	  

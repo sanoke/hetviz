@@ -5,6 +5,8 @@
 #   appearance of the app.          #
 # # # # # # # # # # # # # # # # # # #
 
+library(hetviz)
+
 source("ui_utils.R", local = TRUE)
 
 # - - - - - - - - - - - - - - - - - - -
