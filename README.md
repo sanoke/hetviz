@@ -7,15 +7,22 @@
 
 See the [wiki](https://github.com/sanoke/hetviz/wiki) for detailed instructions and demonstrations.
 
-#### Installation
+#### Install + Deploy
 
 1. Install and load the `devtools` package in `R`, which will facilitate the installation of this package.
-```
+2. Install **hetviz**.
+3. Load **hetviz**.
+4. Run **hetviz**.
+```r
+# step 1
 install.packages("devtools")
+# step 2
+devtools::install_github("sanoke/hetviz")
+# step 3
+library(hetviz)
+# step 4
+hetviz()
 ```
-2. Install **hetviz** using `install_github("sanoke/hetviz")`.
-3. Load **hetviz** using `devtools::load_all()`.
-3. Run **hetviz** using `hetviz::hetviz()` (no arguments). The application will launch in a new window.
 
 
 #### Bug Reporting
