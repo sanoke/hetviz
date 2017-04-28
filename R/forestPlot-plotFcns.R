@@ -292,7 +292,7 @@ forestPlotGen.manyGroups <- function(ds,
     	 #scale_x_discrete(limits = rev(levels(as.factor(plotData0$estGrp)))) +
     	 xlab("subgroup treatment effect (median)") +
     	 ylab("subgroup") + 
-    	 ylim(min(plotData0$Q25-whisker), max(plotData0$Q75+whisker))
+    	 ylim(with(plotData0, min(Q25-whisker)), with(plotData0, max(Q75+whisker)))
     	 
 
 
