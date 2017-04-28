@@ -151,7 +151,7 @@ forestPlotGen.fewGroups  <- function(ds,
   # construction of the forest plot
   p <- ggplot(ds, aes(x=estGrp, y=mmt, group=estGrp, fill=estGrp, color=estGrp)) +
          guides(fill=FALSE) +
-         coord_flip() +
+         #coord_flip() +
          theme_classic() +
          theme(axis.line.y=element_blank(), axis.ticks.y=element_blank(),
                # axis.title.y = element_blank(),
@@ -280,7 +280,7 @@ forestPlotGen.manyGroups <- function(ds,
   # generate the plot
   # (note: plotting this way because error is only added on the y axis)
   p <- ggplot( plotData0 , aes(y = Q50, x = estGrp) ) +
-         coord_flip() +
+         #coord_flip() +
          guides(fill=FALSE) +
          theme_classic() +
          theme(axis.line.y  = element_blank(),
