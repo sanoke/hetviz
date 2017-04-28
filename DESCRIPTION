@@ -19,7 +19,7 @@ BugReports: https://github.com/sanoke/hetviz/issues/
 License: file LICENSE
 Depends:
     R (>= 3.1.0),
-    shiny (<= 1.0.0),
+    shiny,
     ggplot2 (>= 2.1.1),
     ggvis,
     magrittr
