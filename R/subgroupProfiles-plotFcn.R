@@ -39,6 +39,8 @@
 #'   containing the plot.
 #'
 #' @family plotting functions
+#' 
+#' @export
 subgroupProfiles <- function(ds,
                              SPplotPts   = TRUE,
                              SPplotLines = TRUE,

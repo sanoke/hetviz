@@ -40,6 +40,8 @@
 #'   containing the plot.
 #'
 #' @family plotting functions
+#' 
+#' @export
 vizByCovar <- function(ds,
                        covar0,
                        VCPplotPts   = TRUE,

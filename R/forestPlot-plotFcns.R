@@ -52,6 +52,8 @@
 #'   to increment the progress bar within the UI.
 #'
 #' @family plotting functions
+#' 
+#' @export
 forestPlot <- function(ds,
                        displayMedian    = TRUE,
                        displayError     = TRUE,

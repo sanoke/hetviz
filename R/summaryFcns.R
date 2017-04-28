@@ -10,6 +10,8 @@
 #' @param x A vector of real values.
 #'
 #' @return A vector of real values, the same length as the input.
+#' 
+#' @export
 expit <- function(x) { exp(x) / (1 + exp(x)) }
 
 
@@ -27,6 +29,7 @@ expit <- function(x) { exp(x) / (1 + exp(x)) }
 #'
 #' @return The dataset with values in tact, but column names
 #'         changed to be compatible with plotting functions
+#' @export
 dataCompat <- function(ds,
                        outcome,
                        treatment,
@@ -61,6 +64,7 @@ dataCompat <- function(ds,
 #'   contained within the list. Note that by definition,
 #'   a \code{NULL} or empty string (\code{""}) will return
 #'   \code{TRUE}.
+#' @export
 covarInDataset <- function(covarName, covarNames) {
 
   if (nchar(covarName) == 0 | is.null(covarName)) return(TRUE)
@@ -93,6 +97,8 @@ covarInDataset <- function(covarName, covarNames) {
 #'   subgroup.
 #'
 #' @family plotting functions
+#' 
+#' @export
 groupQuantiles <- function(grpNum, ds, quantiles0 = c(0.25, 0.50, 0.75)) {
 
   subgroup <- ds$mmt[ ds$estGrp == grpNum ]

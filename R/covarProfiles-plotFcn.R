@@ -37,6 +37,8 @@
 #'   containing the plot.
 #'
 #' @family plotting functions
+#' 
+#' @export
 covarProfiles <- function(ds,
                           CPplotPts   = TRUE,
                           CPplotLines = TRUE,

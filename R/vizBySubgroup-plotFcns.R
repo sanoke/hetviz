@@ -10,6 +10,7 @@
 #'
 #' @return A string such that, once evaluated, will generate the
 #'   "Viz by Subgroup" tab.
+#' @export
 flexPlot.byStratum <- function(varNames="", reset=FALSE) {
   
   firstPart  <- 'tabPanel("Viz by Subgroup", value="vizSubgroup", br(), '
@@ -82,6 +83,7 @@ flexPlot.byStratum <- function(varNames="", reset=FALSE) {
 #'     \item \code{propor}, the proportion of the entire sample that has that
 #      covariate value and treatment value of that row
 #'   }
+#' @export
 collapseProp <- function(data, var=1) {
 
   # treat var as a factor variable (eases the cross-tabulation)
@@ -146,6 +148,8 @@ collapseProp <- function(data, var=1) {
 #'   containing the plot.
 #'
 #' @family plotting functions
+#' 
+#' @export
 vizBySubgroup <- function(covarData,
                           trt,
                           covarName,
