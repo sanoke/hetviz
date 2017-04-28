@@ -158,8 +158,9 @@ forestPlotGen.fewGroups  <- function(ds,
                axis.line.x = element_line(lineend="round"),
                legend.position="none") +
     	 scale_x_discrete(limits = rev(levels(ds$estGrp))) +
-	     ylab("Treatment Effect") +
-       xlab("Estimated Subgroup")
+	     xlab("Treatment Effect") +
+         ylab("Estimated Subgroup") +
+         ylim(min(ds$mmt)-0.1*min(ds$mmt), max(ds$mmt)+0.1*max(ds$mmt))
 
   if( displayBoxplot == TRUE ) {
 
@@ -289,8 +290,10 @@ forestPlotGen.manyGroups <- function(ds,
                axis.line.x  = element_line(lineend="round"),
                legend.position="none") +
     	 #scale_x_discrete(limits = rev(levels(as.factor(plotData0$estGrp)))) +
-    	 ylab("subgroup treatment effect (median)") +
-    	 xlab("subgroup")
+    	 xlab("subgroup treatment effect (median)") +
+    	 ylab("subgroup") + 
+    	 ylim(min(plotData0$Q25-whisker), max(plotData0$Q75+whisker))
+    	 
 
 
    # add the marginal mean (if the user wants it)
