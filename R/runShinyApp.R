@@ -11,6 +11,7 @@
 #' @import ggplot2
 #' @import shiny
 #' @import magrittr
+#' @import ggvis
 hetviz <- function() {
   appDir <- system.file("shiny", package = "hetviz")
   if (appDir == "") {
