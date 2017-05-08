@@ -149,57 +149,89 @@ forestPlotGen.fewGroups  <- function(ds,
   incProgress(0.10, detail = "Creating underlying plot structure")
 
   # construction of the forest plot
+  # note: by default, ggplot makes vertical boxplots (i.e, x var is a factor).
+  #       to make the horizontal plots I want, I have to generage the vertical
+  #       boxplots, then flip the coordinates.
   p <- ggplot(ds, aes(x=estGrp, y=mmt, group=estGrp, fill=estGrp, color=estGrp)) +
          guides(fill=FALSE) +
-         coord_flip() +
          theme_classic() +
-         theme(axis.line.y=element_blank(), axis.ticks.y=element_blank(),
+         theme(axis.line.x=element_blank(), axis.ticks.x=element_blank(),
                # axis.title.y = element_blank(),
-               axis.line.x = element_line(lineend="round"),
+               axis.line.y = element_line(lineend="round"),
                legend.position="none") +
-    	 scale_x_discrete(limits = rev(levels(ds$estGrp))) +
-	     xlab("Treatment Effect") +
-         ylab("Estimated Subgroup") +
-         ylim(min(ds$mmt)-0.1*min(ds$mmt), max(ds$mmt)+0.1*max(ds$mmt))
+         # scale_x_discrete() : map breaks argument, not limits, to be able
+         #                      to plot vertical lines later
+         scale_x_discrete(name = "estimated subgroup", labels = levels(ds$estGrp),
+                          #breaks = rev(levels(ds$estGrp)),
+                          limits = levels(ds$estGrp)) +
+         ylab("estimated treatment effect") +
+         ylim(min(ds$mmt)-0.1*min(ds$mmt), 
+              max(ds$mmt)+0.1*max(ds$mmt))
+  
+  # BELOW: I believe there's a big in ggplot2 that's preventing me from plotting 
+  #        the vertical guide lines (for simulated data) separately so I have
+  #        to lump it in with plotting another element. 
+  #        The var below is a trigger to let me know that I've already plotted
+  #        the lines.
+  vertLines.simData <- FALSE
 
   if( displayBoxplot == TRUE ) {
 
     # updating the progress bar
     incProgress(0.30, detail = "Constructing boxplots")
 
-  	p <- p + geom_boxplot(alpha=ifelse(jitter, 0.2, 0.5),
-  	                      lwd=0.2, outlier.size=NA, notch=FALSE)
+    if(simData == 1 & vertLines.simData == FALSE) {
+      p <- p + geom_hline(yintercept=c(1,2,5,6,9,10), 
+                          linetype="dotted", lwd=0.2, alpha=0.7) +
+               geom_boxplot(alpha=ifelse(jitter, 0.2, 0.5),
+                            lwd=0.2, 
+                            outlier.size=NA, notch=FALSE)
+      vertLines.simData <- TRUE
+    } else {
+      p <- p + geom_boxplot(alpha=ifelse(jitter, 0.2, 0.5),
+                            lwd=0.2, 
+                            outlier.size=NA, notch=FALSE)
+    }
+  	
   }
 
   if (jitter == TRUE) {
 
     # updating the progress bar
     incProgress(0.30, detail = "Constructing jittered points")
-
-  	p <- p + geom_jitter(width=0.2, pch=21, stroke=0.3, color="black")
+    
+    if(simData == 1 & vertLines.simData == FALSE) {
+      p <- p + geom_hline(yintercept=c(1,2,5,6,9,10), 
+                          linetype="dotted", lwd=0.2, alpha=0.7) +
+               geom_jitter(width=0.2, pch=21, stroke=0.3, color="black")
+      vertLines.simData <- TRUE
+    } else {
+      p <- p + geom_jitter(width=0.2, pch=21, stroke=0.3, color="black")
+    }
+    
   }
 
-  # so the vertical lines are the last layer (for simple simulated data)
-  if (simData == 1) {
 
-    # updating the progress bar
-    incProgress(0.5, detail = "Adding horizontal guide lines")
-
-    p <- p + geom_hline(yintercept=c(1,2,5,6,9,10), linetype="dotted", lwd=0.1, alpha=0.7)
-  }
-
-
-  # convert into a plotly object, then hide outliers
-  # (because adding jittered points on top)
-  # https://community.plot.ly/t/ggplotly-ignoring-geom-boxplot-outlier-parameters/2247
+  # convert into a plotly object, then 
+  # - hide outliers (when adding jittered points on top)
+  #   https://community.plot.ly/t/ggplotly-ignoring-geom-boxplot-outlier-parameters/2247
+  # - fix issue with coord_flip()
+  #   https://github.com/sanoke/hetviz/issues/41
+  #   https://github.com/ropensci/plotly/issues/390
+  #   [ decided to not use coord_flip() ]
   p <- plotly::plotly_build(p)
 
-  # if adding jittered points, hide the boxplot outliers (because they're redundant).
-  # to hide the outliers, we need to select the layer that contains them...
-  # but the layer index depends on whether there are other elements in the plot.
+  # - if adding jittered points, hide the boxplot outliers (because they're redundant).
+  #   to hide the outliers, we need to select the layer that contains them...
+  #   but the layer index depends on whether there are other elements in the plot.
+  # 
 
   # updating the progress bar
   incProgress(0.10, detail = "Final touches")
+  
+  # NOTE: PLOTLY LAYERS
+  #       LAYER  1 is the vertical guide lines
+  #       LAYERS 2 THROUGH numgrp+1 (e.g., 11 under simData) are the remaining subgroups
 
   if (jitter == TRUE & displayBoxplot == TRUE) {
 
@@ -207,19 +239,21 @@ forestPlotGen.fewGroups  <- function(ds,
                                              FUN = function(x){ x$marker = list(opacity = 0); return(x) })
 
   } else if (jitter == TRUE & displayBoxplot == FALSE) {
-
-  	# do nothing
+    
+    # do nothing
 
   } else if (jitter == FALSE & displayBoxplot == TRUE) {
 
     errorMsg <- " "
+    
+    
+    # **BUG** temp fix for the vertical "true ITE" lines (will come back to this...)
+    p$x$data[1]   <- lapply(p$x$data[1],
+                            FUN = function(x){ x$marker = list(opacity = 0); return(x) })
 
   	# otherwise, beautify outliers (default is an ugly black outline)
-    p$x$data[1:length(p$x$data)] <- lapply(p$x$data[1:length(p$x$data)],
+    p$x$data[2:length(p$x$data)] <- lapply(p$x$data[2:length(p$x$data)],
                                            FUN = function(x){ x$marker = list(opacity = 0.5); return(x) })
-    # **BUG** temp fix for the vertical "true ITE" lines (will come back to this...)
-    p$x$data[length(p$x$data)]   <- lapply(p$x$data[length(p$x$data)],
-                                            FUN = function(x){ x$marker = list(opacity = 0); return(x) })
 
   }
 
@@ -271,7 +305,7 @@ forestPlotGen.manyGroups <- function(ds,
                           ncol     = 3,
                           dimnames = list(NULL,c("Q25","Q50","Q75")))
 
-  plotData0     <- data.frame( estGrp = rank(-plotData0[,"Q50"]) ,
+  plotData0     <- data.frame( estGrp = rank(plotData0[,"Q50"]) ,
                                plotData0 ,
                                whisker = 1.5 * (plotData0[,"Q75"] - plotData0[,"Q25"]) )
 
@@ -281,18 +315,17 @@ forestPlotGen.manyGroups <- function(ds,
   # generate the plot
   # (note: plotting this way because error is only added on the y axis)
   p <- ggplot( plotData0 , aes(y = Q50, x = estGrp) ) +
-         coord_flip() +
          guides(fill=FALSE) +
          theme_classic() +
-         theme(axis.line.y  = element_blank(),
-               axis.ticks.y = element_blank(),
-               axis.text.y  = element_blank(),
-               axis.line.x  = element_line(lineend="round"),
+         theme(axis.line.x  = element_blank(),
+               axis.ticks.x = element_blank(),
+               axis.text.x  = element_blank(),
+               axis.line.y  = element_line(lineend="round"),
                legend.position="none") +
-    	 #scale_x_discrete(limits = rev(levels(as.factor(plotData0$estGrp)))) +
-    	 xlab("subgroup treatment effect (median)") +
-    	 ylab("subgroup") + 
-    	 ylim(with(plotData0, min(Q25-whisker)), with(plotData0, max(Q75+whisker)))
+    	 ylab("estimated treatment effect (median)") +
+    	 xlab("estimated subgroup") + 
+    	 ylim(with(plotData0, min(Q25-whisker)-0.10*min(Q25-whisker)), 
+    	      with(plotData0, max(Q75+whisker)+0.10*max(Q75+whisker))) 
     	 
 
 
