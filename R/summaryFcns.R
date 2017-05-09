@@ -102,8 +102,22 @@ covarInDataset <- function(covarName, covarNames) {
 groupQuantiles <- function(grpNum, ds, quantiles0 = c(0.25, 0.50, 0.75)) {
 
   subgroup <- ds$mmt[ ds$estGrp == grpNum ]
+  
+  subgrpQuantiles <- quantile(subgroup, probs = quantiles0 )
+  
+  whiskerLeft <- as.numeric(subgrpQuantiles["50%"] - 
+                            1.5 * (subgrpQuantiles["75%"] - subgrpQuantiles["25%"]))
+  whiskerLeft <- ifelse( min(subgroup) > whiskerLeft ,
+                         min(subgroup),
+                         whiskerLeft)
+  
+  whiskerRight <- as.numeric(subgrpQuantiles["50%"] + 
+                             1.5 * (subgrpQuantiles["75%"] - subgrpQuantiles["25%"]))
+  whiskerRight <- ifelse( max(subgroup) < whiskerRight ,
+                          max(subgroup),
+                          whiskerRight)  
 
-  return( quantile(subgroup, probs = quantiles0 ) )
+  return( c(wL=whiskerLeft, subgrpQuantiles, wR=whiskerRight) )
 
 }
 
