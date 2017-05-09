@@ -302,12 +302,11 @@ forestPlotGen.manyGroups <- function(ds,
 
   plotData0     <- matrix(unlist( plotDataStats , use.names = FALSE),
                           byrow    = TRUE,
-                          ncol     = 3,
-                          dimnames = list(NULL,c("Q25","Q50","Q75")))
+                          ncol     = 5,
+                          dimnames = list(NULL,c("wL","Q25","Q50","Q75","wR")))
 
   plotData0     <- data.frame( estGrp = rank(plotData0[,"Q50"]) ,
-                               plotData0 ,
-                               whisker = 1.5 * (plotData0[,"Q75"] - plotData0[,"Q25"]) )
+                               plotData0 )
 
   # updating the progress bar
   incProgress(0.10, detail = "Creating underlying plot structure")
@@ -324,8 +323,8 @@ forestPlotGen.manyGroups <- function(ds,
                legend.position="none") +
     	 ylab("estimated treatment effect (median)") +
     	 xlab("estimated subgroup") + 
-    	 ylim(with(plotData0, min(Q25-whisker)-0.10*min(Q25-whisker)), 
-    	      with(plotData0, max(Q75+whisker)+0.10*max(Q75+whisker))) 
+    	 ylim(with(plotData0, min(wL)-0.10*min(wL)), 
+    	      with(plotData0, max(wR)+0.10*max(wR))) 
     	 
 
 
@@ -346,7 +345,7 @@ forestPlotGen.manyGroups <- function(ds,
 
    	 p <- p + geom_segment(aes(y=Q25, yend=Q75, x=estGrp, xend=estGrp),
    	                       size = 0.5) +
-   	          geom_segment(aes(y=Q25-whisker, yend=Q75+whisker, x=estGrp, xend=estGrp),
+   	          geom_segment(aes(y=wL,  yend=wR,  x=estGrp, xend=estGrp),
    	                       size = 0.1)
    }
 
