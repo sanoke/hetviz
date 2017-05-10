@@ -132,12 +132,12 @@ fluidPage(
                 is ready to be pressed."),
 
       # start button
-      uiOutput("start"),
+      uiOutput("start")
 
-      div(actionButton("reset", HTML("<a href=\"#\" class=\"button\">Reset</a>"),
-                       icon=icon("remove-sign", lib='glyphicon')),
-          style="float:right;"
-      ) # - - - end div(actionButton())
+      # div(actionButton("reset", HTML("<a href=\"#\" class=\"button\">Reset</a>"),
+      #                  icon=icon("remove-sign", lib='glyphicon')),
+      #    style="float:right;"
+      # ) # - - - end div(actionButton())
 
     ), # - - - end sidebarPanel()
 
@@ -292,6 +292,16 @@ fluidPage(
          )), # - - - end "Data Preview" tab
 
          tabPanel("Forest Plot", value="forestPlot", br(),
+                  
+           HTML('This <strong>forest plot</strong> visualization allows 
+                you to compare the subgroup-specific 
+                treatment effects and identify any 
+                general patterns that would suggest heterogeneity.
+                <p />
+                A description of what you should expect to see can be
+                found in the 
+                <a href="https://github.com/sanoke/hetviz/wiki/Forest-Plot" target="_blank">
+                User Manual</a>.'),
 
            conditionalPanel(
               condition = "input.indivPlot == 0 && !input.displayMedian && !input.displayError && !input.displayLine",

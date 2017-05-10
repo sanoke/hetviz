@@ -182,7 +182,7 @@ forestPlotGen.fewGroups  <- function(ds,
 
     if(simData == 1 & vertLines.simData == FALSE) {
       p <- p + geom_hline(yintercept=c(1,2,5,6,9,10), 
-                          linetype="dotted", lwd=0.2, alpha=0.7) +
+                          linetype="dotted", lwd=0.2, alpha=0.8) +
                geom_boxplot(alpha=ifelse(jitter, 0.2, 0.5),
                             lwd=0.2, 
                             outlier.size=NA, notch=FALSE)

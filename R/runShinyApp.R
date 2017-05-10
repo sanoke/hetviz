@@ -9,6 +9,7 @@
 #'
 #' @export
 #' @import ggplot2
+#' @import plotly
 #' @import shiny
 #' @import magrittr
 hetviz <- function() {
