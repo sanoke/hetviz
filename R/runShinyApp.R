@@ -12,6 +12,7 @@
 #' @import plotly
 #' @import shiny
 #' @import magrittr
+#' @importFrom stats quantile sd
 hetviz <- function() {
   appDir <- system.file("shiny", package = "hetviz")
   if (appDir == "") {
