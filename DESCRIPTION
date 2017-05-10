@@ -26,7 +26,7 @@ Depends:
 Imports:
     readr,
     dplyr,
-    plotly,
+    plotly (>= 4.6.0),
     shinyjs (>= 0.6.0),
     DT (>= 0.2),
     shinythemes (>= 1.1.1)
