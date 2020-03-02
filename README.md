@@ -9,10 +9,10 @@ See the [wiki](https://github.com/sanoke/hetviz/wiki) for detailed instructions 
 
 #### Install + Deploy
 
-1. Install and load the `devtools` package in `R`, which will facilitate the installation of this package.
-2. Install **hetviz**.
-3. Load **hetviz**.
-4. Run **hetviz**.
+1. Install and load the `devtools` package in `R`, which will facilitate the installation of this package
+2. Install **hetviz**
+3. Load **hetviz**
+4. Run **hetviz**
 ```r
 # step 1
 install.packages("devtools")
